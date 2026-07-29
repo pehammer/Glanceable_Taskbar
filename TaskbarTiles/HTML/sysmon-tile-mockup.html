@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Monitor Tile — WinUI / Fluent Design</title>
+<style>
+  /* ── WinUI / Fluent Design System Tokens (Dark) ── */
+  :root {
+    --fill-solid-base: #202020;
+    --fill-mica-base: #2c2c2c;
+    --fill-card-default: #2d2d2d;
+    --fill-acrylic-default: rgba(44,44,44,0.96);
+    --fill-subtle-transparent: rgba(255,255,255,0.0419);
+    --fill-subtle-secondary: rgba(255,255,255,0.0605);
+    --fill-subtle-tertiary: rgba(255,255,255,0.0326);
+    --fill-accent-default: #60cdff;
+    --fill-accent-secondary: rgba(96,205,255,0.90);
+    --fill-accent-tertiary: rgba(96,205,255,0.80);
+    --fill-system-success: #6ccb5f;
+    --fill-system-caution: #fce100;
+    --fill-system-critical: #ff99a4;
+    --fill-system-attention: #60cdff;
+
+    --text-primary: rgba(255,255,255,1);
+    --text-secondary: rgba(255,255,255,0.786);
+    --text-tertiary: rgba(255,255,255,0.5442);
+    --text-disabled: rgba(255,255,255,0.3628);
+    --text-on-accent: #000;
+
+    --stroke-card-default: rgba(255,255,255,0.0578);
+    --stroke-control-default: rgba(255,255,255,0.0698);
+    --stroke-surface-flyout: rgba(255,255,255,0.0578);
+    --stroke-divider: rgba(255,255,255,0.0837);
+
+    --bg-taskbar: #1c1c1c;
+    --shadow-flyout: 0 8px 32px rgba(0,0,0,0.37);
+
+    --radius-small: 4px;
+    --radius-medium: 8px;
+    --radius-overlay: 8px;
+
+    --font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --type-caption: 400 12px/16px var(--font-family);
+    --type-body: 400 14px/20px var(--font-family);
+    --type-body-strong: 600 14px/20px var(--font-family);
+    --type-subtitle: 600 20px/28px var(--font-family);
+
+    /* System Monitor accent palette */
+    --cpu-color: #60cdff;
+    --ram-color: #c78dff;
+    --gpu-color: #6ccb5f;
+    --disk-color: #ffb340;
+    --net-color: #ff99a4;
+    --temp-normal: #6ccb5f;
+    --temp-warm: #fce100;
+    --temp-hot: #ff99a4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font: var(--type-body);
+    background: var(--fill-solid-base);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+
+  /* ── Annotation ── */
+  .scene-label {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .section {
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── Taskbar ── */
+  .taskbar {
+    background: var(--bg-taskbar);
+    border-radius: var(--radius-medium);
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .taskbar-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-small);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-tertiary);
+    transition: background 0.1s;
+  }
+
+  .taskbar-icon:hover { background: var(--fill-subtle-secondary); }
+
+  .taskbar-icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .taskbar-divider {
+    width: 1px; height: 20px;
+    background: var(--stroke-divider);
+    margin: 0 4px;
+  }
+
+  /* ── Glanceable Tile ── */
+  .tile {
+    background: var(--fill-subtle-transparent);
+    border: 1px solid var(--stroke-control-default);
+    border-radius: var(--radius-small);
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+    height: 36px;
+    transition: background 0.1s;
+  }
+
+  .tile:hover { background: var(--fill-subtle-secondary); }
+
+  .tile-label {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-weight: 500;
+    margin-right: 2px;
+  }
+
+  /* Mini bar group in tile */
+  .tile-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 18px;
+  }
+
+  .tile-bar {
+    width: 4px;
+    border-radius: 2px;
+    transition: height 0.3s ease;
+  }
+
+  .tile-bar.cpu  { background: var(--cpu-color); }
+  .tile-bar.ram  { background: var(--ram-color); }
+  .tile-bar.gpu  { background: var(--gpu-color); }
+
+  .tile-temp {
+    font: var(--type-caption);
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  /* ── Flyout ── */
+  .flyout {
+    background: var(--fill-acrylic-default);
+    border: 1px solid var(--stroke-surface-flyout);
+    border-radius: var(--radius-overlay);
+    width: 380px;
+    box-shadow: var(--shadow-flyout);
+    overflow: hidden;
+  }
+
+  .flyout-header {
+    padding: 16px 16px 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .flyout-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .flyout-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-small);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: rgba(96, 205, 255, 0.12);
+    color: var(--fill-accent-default);
+  }
+
+  .flyout-icon svg { width: 16px; height: 16px; fill: currentColor; }
+
+  .flyout-title {
+    font: var(--type-body-strong);
+    color: var(--text-primary);
+  }
+
+  .flyout-subtitle {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+
+  .uptime-badge {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: var(--fill-subtle-transparent);
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--stroke-divider);
+    margin: 0 16px;
+  }
+
+  .group-header {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-weight: 600;
+    padding: 12px 16px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Resource Gauges ── */
+  .gauges {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 4px 16px 12px;
+  }
+
+  .gauge-card {
+    background: var(--fill-subtle-transparent);
+    border: 1px solid var(--stroke-control-default);
+    border-radius: var(--radius-small);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Ring gauge */
+  .ring-container {
+    position: relative;
+    width: 56px; height: 56px;
+  }
+
+  .ring-bg, .ring-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 56px; height: 56px;
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .ring-bg { stroke: var(--fill-subtle-secondary); }
+
+  .ring-fill {
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+
+  .ring-fill.cpu  { stroke: var(--cpu-color); }
+  .ring-fill.ram  { stroke: var(--ram-color); }
+  .ring-fill.gpu  { stroke: var(--gpu-color); }
+
+  .ring-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .gauge-name {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .gauge-detail {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-size: 11px;
+    text-align: center;
+  }
+
+  /* ── Process List (WinUI ListView) ── */
+  .list-section { padding: 4px 0; }
+
+  .list-item {
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--radius-small);
+    margin: 0 4px;
+    transition: background 0.1s;
+    cursor: default;
+  }
+
+  .list-item:hover { background: var(--fill-subtle-secondary); }
+
+  .process-icon {
+    width: 20px; height: 20px;
+    border-radius: var(--radius-small);
+    background: var(--fill-subtle-secondary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+
+  .process-info { flex: 1; min-width: 0; }
+
+  .process-name {
+    font: var(--type-body);
+    font-size: 13px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .process-detail {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-size: 11px;
+    margin-top: 1px;
+  }
+
+  .process-usage {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .usage-val {
+    font: var(--type-caption);
+    font-weight: 600;
+    font-size: 11px;
+    text-align: right;
+    min-width: 36px;
+  }
+
+  .usage-val.cpu  { color: var(--cpu-color); }
+  .usage-val.ram  { color: var(--ram-color); }
+
+  .usage-header {
+    padding: 4px 16px 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .usage-header-spacer { flex: 1; }
+
+  .usage-header-label {
+    font: var(--type-caption);
+    font-size: 10px;
+    color: var(--text-disabled);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .usage-header-label:first-of-type { margin-left: 30px; }
+
+  /* ── Thermals & Disk I/O grid ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 4px 16px 12px;
+  }
+
+  .metric-card {
+    background: var(--fill-subtle-transparent);
+    border: 1px solid var(--stroke-control-default);
+    border-radius: var(--radius-small);
+    padding: 12px;
+  }
+
+  .metric-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .metric-label {
+    font: var(--type-caption);
+    color: var(--text-tertiary);
+    font-weight: 600;
+  }
+
+  .metric-value {
+    font: var(--type-body-strong);
+    font-size: 18px;
+  }
+
+  .metric-value.normal  { color: var(--temp-normal); }
+  .metric-value.warm    { color: var(--temp-warm); }
+  .metric-value.hot     { color: var(--temp-hot); }
+  .metric-value.disk    { color: var(--disk-color); }
+  .metric-value.net     { color: var(--net-color); }
+  .metric-value.accent  { color: var(--fill-accent-default); }
+
+  /* Mini sparkline */
+  .sparkline {
+    width: 100%;
+    height: 24px;
+    margin-top: 4px;
+  }
+
+  .sparkline polyline {
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sparkline .area {
+    stroke: none;
+    opacity: 0.15;
+  }
+
+  .sparkline.cpu  polyline { stroke: var(--cpu-color); }
+  .sparkline.cpu  .area    { fill: var(--cpu-color); }
+  .sparkline.temp polyline { stroke: var(--temp-warm); }
+  .sparkline.temp .area    { fill: var(--temp-warm); }
+  .sparkline.disk polyline { stroke: var(--disk-color); }
+  .sparkline.disk .area    { fill: var(--disk-color); }
+  .sparkline.net  polyline { stroke: var(--net-color); }
+  .sparkline.net  .area    { fill: var(--net-color); }
+
+  .metric-sub {
+    font: var(--type-caption);
+    color: var(--text-disabled);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  /* ── Buttons ── */
+  .button-bar {
+    padding: 12px 16px 16px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn {
+    flex: 1;
+    height: 32px;
+    border-radius: var(--radius-small);
+    border: 1px solid var(--stroke-control-default);
+    background: var(--fill-subtle-transparent);
+    color: var(--text-primary);
+    font: var(--type-caption);
+    font-weight: 500;
+    cursor: default;
+    transition: background 0.1s;
+    text-align: center;
+    font-family: var(--font-family);
+    display: flex; align-items: center; justify-content: center;
+    gap: 4px;
+  }
+
+  .btn:hover { background: var(--fill-subtle-secondary); }
+  .btn:active { background: var(--fill-subtle-tertiary); color: var(--text-secondary); }
+
+  .btn.accent {
+    background: var(--fill-accent-default);
+    border-color: transparent;
+    color: var(--text-on-accent);
+    font-weight: 600;
+  }
+
+  .btn.accent:hover { background: var(--fill-accent-secondary); }
+
+  /* SVG helpers */
+  svg { fill: currentColor; }
+</style>
+</head>
+<body>
+
+<!-- ── TASKBAR ── -->
+<div class="section">
+  <div class="scene-label">Glanceable tile on taskbar</div>
+  <div class="taskbar">
+    <div class="taskbar-icon">
+      <svg viewBox="0 0 20 20"><path d="M2 4h8v8H2V4zm9 0h8v8h-8V4zM2 13h8v4H2v-4zm9 0h8v4h-8v-4z"/></svg>
+    </div>
+    <div class="taskbar-icon">
+      <svg viewBox="0 0 16 16"><path d="M1.5 2A1.5 1.5 0 000 3.5v9A1.5 1.5 0 001.5 14h13a1.5 1.5 0 001.5-1.5V6H8.707l-2-2H1.5zM1 3.5a.5.5 0 01.5-.5h4.793l2 2H15v7.5a.5.5 0 01-.5.5h-13a.5.5 0 01-.5-.5v-9z"/></svg>
+    </div>
+    <div class="taskbar-icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1z"/></svg>
+    </div>
+
+    <div class="taskbar-divider"></div>
+
+    <!-- Normal state -->
+    <div class="tile">
+      <div class="tile-bars">
+        <div class="tile-bar cpu" style="height: 65%;"></div>
+        <div class="tile-bar ram" style="height: 78%;"></div>
+        <div class="tile-bar gpu" style="height: 30%;"></div>
+      </div>
+      <span class="tile-label">SYS</span>
+      <span class="tile-temp" style="color: var(--temp-normal);">62°</span>
+    </div>
+
+    <!-- Elevated state -->
+    <div class="tile">
+      <div class="tile-bars">
+        <div class="tile-bar cpu" style="height: 92%;"></div>
+        <div class="tile-bar ram" style="height: 88%;"></div>
+        <div class="tile-bar gpu" style="height: 95%;"></div>
+      </div>
+      <span class="tile-label">SYS</span>
+      <span class="tile-temp" style="color: var(--temp-hot);">87°</span>
+    </div>
+
+    <div class="taskbar-divider"></div>
+
+    <div class="taskbar-icon">
+      <svg viewBox="0 0 16 16"><path d="M8 2a4 4 0 00-4 4v3l-1 2h10l-1-2V6a4 4 0 00-4-4zM6.5 12.5a1.5 1.5 0 003 0"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ── FLYOUT ── -->
+<div class="scene-label" style="margin-bottom: 16px;">Flyout on hover</div>
+
+<div class="flyout">
+
+  <!-- Header -->
+  <div class="flyout-header">
+    <div class="flyout-header-left">
+      <div class="flyout-icon">
+        <svg viewBox="0 0 16 16"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm1 0v10h10V3H3zm2 2h2v2H5V5zm4 0h2v2H9V5zM5 9h2v2H5V9zm4 0h2v2H9V9z"/></svg>
+      </div>
+      <div>
+        <div class="flyout-title">System Monitor</div>
+        <div class="flyout-subtitle">Windows 11 · AMD Ryzen 9 7950X</div>
+      </div>
+    </div>
+    <div class="uptime-badge">⬆ 4d 7h</div>
+  </div>
+
+  <!-- Resource Gauges -->
+  <div class="group-header">Resource Usage</div>
+  <div class="gauges">
+    <!-- CPU -->
+    <div class="gauge-card">
+      <div class="ring-container">
+        <svg class="ring-bg" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24"/></svg>
+        <svg class="ring-fill cpu" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24"
+            stroke-dasharray="150.8"
+            stroke-dashoffset="52.8"/>
+        </svg>
+        <span class="ring-label">65%</span>
+      </div>
+      <div class="gauge-name">CPU</div>
+      <div class="gauge-detail">4.8 GHz · 12C/24T</div>
+    </div>
+
+    <!-- RAM -->
+    <div class="gauge-card">
+      <div class="ring-container">
+        <svg class="ring-bg" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24"/></svg>
+        <svg class="ring-fill ram" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24"
+            stroke-dasharray="150.8"
+            stroke-dashoffset="33.2"/>
+        </svg>
+        <span class="ring-label">78%</span>
+      </div>
+      <div class="gauge-name">RAM</div>
+      <div class="gauge-detail">25 / 32 GB</div>
+    </div>
+
+    <!-- GPU -->
+    <div class="gauge-card">
+      <div class="ring-container">
+        <svg class="ring-bg" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24"/></svg>
+        <svg class="ring-fill gpu" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24"
+            stroke-dasharray="150.8"
+            stroke-dashoffset="105.6"/>
+        </svg>
+        <span class="ring-label">30%</span>
+      </div>
+      <div class="gauge-name">GPU</div>
+      <div class="gauge-detail">RTX 4080 · 6.2 GB</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Top Processes -->
+  <div class="group-header">Top Processes</div>
+  <div class="usage-header">
+    <div class="usage-header-spacer"></div>
+    <div class="usage-header-label" style="color: var(--cpu-color);">CPU</div>
+    <div class="usage-header-label" style="color: var(--ram-color);">RAM</div>
+  </div>
+  <div class="list-section">
+    <div class="list-item">
+      <div class="process-icon">VS</div>
+      <div class="process-info">
+        <div class="process-name">devenv.exe</div>
+        <div class="process-detail">Visual Studio 2022</div>
+      </div>
+      <div class="process-usage">
+        <div class="usage-val cpu">24.3%</div>
+        <div class="usage-val ram">4.1 GB</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="process-icon">🌐</div>
+      <div class="process-info">
+        <div class="process-name">msedge.exe</div>
+        <div class="process-detail">Microsoft Edge — 34 tabs</div>
+      </div>
+      <div class="process-usage">
+        <div class="usage-val cpu">12.8%</div>
+        <div class="usage-val ram">3.6 GB</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="process-icon">🐳</div>
+      <div class="process-info">
+        <div class="process-name">vmmem</div>
+        <div class="process-detail">WSL2 / Docker</div>
+      </div>
+      <div class="process-usage">
+        <div class="usage-val cpu">9.4%</div>
+        <div class="usage-val ram">6.2 GB</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="process-icon">TS</div>
+      <div class="process-info">
+        <div class="process-name">node.exe</div>
+        <div class="process-detail">TypeScript Language Server</div>
+      </div>
+      <div class="process-usage">
+        <div class="usage-val cpu">8.1%</div>
+        <div class="usage-val ram">1.8 GB</div>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="process-icon">🤖</div>
+      <div class="process-info">
+        <div class="process-name">copilot-agent.exe</div>
+        <div class="process-detail">GitHub Copilot</div>
+      </div>
+      <div class="process-usage">
+        <div class="usage-val cpu">5.2%</div>
+        <div class="usage-val ram">920 MB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="divider"></div>
+  <div class="button-bar">
+    <button class="btn">Task Manager</button>
+    <button class="btn">Resource Monitor</button>
+    <button class="btn accent">Details</button>
+  </div>
+</div>
+
+</body>
+</html>

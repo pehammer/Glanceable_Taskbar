@@ -1,0 +1,351 @@
+<!-- 
+    CI/CD Pipeline Taskbar Tile — WinUI 3 XAML
+    Flyout control showing build status, test results, and deployments.
+    Uses standard WinUI 3 controls and Fluent Design tokens.
+-->
+<UserControl
+    x:Class="TaskbarTiles.CiCdTileFlyout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="360">
+
+    <UserControl.Resources>
+        <!-- Fluent semantic colors -->
+        <SolidColorBrush x:Key="StatusPassBrush" Color="#6CCB5F"/>
+        <SolidColorBrush x:Key="StatusFailBrush" Color="#FF99A4"/>
+        <SolidColorBrush x:Key="StatusRunningBrush" Color="#60CDFF"/>
+        <SolidColorBrush x:Key="StatusCautionBrush" Color="#FCE100"/>
+        <SolidColorBrush x:Key="StatusPassBgBrush" Color="#1A6CCB5F"/>
+        <SolidColorBrush x:Key="StatusFailBgBrush" Color="#1AFF99A4"/>
+        <SolidColorBrush x:Key="StatusRunningBgBrush" Color="#1A60CDFF"/>
+
+        <!-- Build item template -->
+        <DataTemplate x:Key="BuildItemTemplate">
+            <Grid Padding="0,8" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Status icon -->
+                <Border Grid.Column="0"
+                        Width="20" Height="20"
+                        CornerRadius="10"
+                        Background="{Binding StatusBackground}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="{Binding StatusGlyph}"
+                              FontSize="10"
+                              Foreground="{Binding StatusForeground}"
+                              HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Build info -->
+                <StackPanel Grid.Column="1" Spacing="2">
+                    <TextBlock Text="{Binding CommitMessage}"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               FontSize="13"
+                               TextTrimming="CharacterEllipsis"
+                               MaxLines="1"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="{Binding Branch}"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="·"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="{Binding BuildNumber}"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Timestamp -->
+                <TextBlock Grid.Column="2"
+                           Text="{Binding TimeAgo}"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!-- Main flyout surface -->
+    <Border Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource SurfaceStrokeColorFlyoutBrush}"
+            BorderThickness="1"
+            CornerRadius="8">
+
+        <StackPanel>
+
+            <!-- ═══ HEADER ═══ -->
+            <Grid Padding="16,16,16,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Icon -->
+                <Border Grid.Column="0"
+                        Width="32" Height="32"
+                        CornerRadius="4"
+                        Background="{StaticResource StatusPassBgBrush}"
+                        Margin="0,0,12,0">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE895;"
+                              FontSize="16"
+                              Foreground="{StaticResource StatusPassBrush}"/>
+                </Border>
+
+                <!-- Title -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="CI/CD Pipeline"
+                               Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock Text="pehammer / Nova_Planning"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                               Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- Status badge -->
+                <Border Grid.Column="2"
+                        Background="{StaticResource StatusPassBgBrush}"
+                        CornerRadius="99"
+                        Padding="8,2"
+                        VerticalAlignment="Top"
+                        Margin="0,2,0,0">
+                    <TextBlock Text="All Passing"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource StatusPassBrush}"/>
+                </Border>
+            </Grid>
+
+            <!-- ═══ INFOBAR ═══ -->
+            <InfoBar IsOpen="True"
+                     IsClosable="False"
+                     Severity="Success"
+                     Message="All pipelines healthy — last failure 3 days ago"
+                     Margin="12,0,12,8"
+                     Padding="8,6"/>
+
+            <Border Height="1"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Margin="16,0"/>
+
+            <!-- ═══ RECENT BUILDS ═══ -->
+            <TextBlock Text="RECENT BUILDS"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       FontWeight="SemiBold"
+                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                       CharacterSpacing="50"
+                       Margin="16,12,16,8"/>
+
+            <!-- Build: Passing #1 -->
+            <Grid Padding="16,8" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Width="20" Height="20" CornerRadius="10"
+                        Background="{StaticResource StatusPassBgBrush}">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE73E;" FontSize="10"
+                              Foreground="{StaticResource StatusPassBrush}"/>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="2">
+                    <TextBlock Text="feat: add taskbar tile rendering"
+                               FontSize="13" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="main" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="·" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="#1284" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" Text="2m"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+
+            <!-- Build: Passing #2 -->
+            <Grid Padding="16,8" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Width="20" Height="20" CornerRadius="10"
+                        Background="{StaticResource StatusPassBgBrush}">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xE73E;" FontSize="10"
+                              Foreground="{StaticResource StatusPassBrush}"/>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="2">
+                    <TextBlock Text="fix: flyout positioning on multi-monitor"
+                               FontSize="13" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="main" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="·" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="#1283" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" Text="18m"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+
+            <!-- Build: Running -->
+            <Grid Padding="16,8" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ProgressRing Width="20" Height="20" IsActive="True"
+                              Foreground="{StaticResource StatusRunningBrush}"/>
+
+                <StackPanel Grid.Column="1" Spacing="2">
+                    <TextBlock Text="chore: update WinUI dependencies"
+                               FontSize="13" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="dev/winui-update" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="·" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Text="#1285" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" Text="running"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{StaticResource StatusRunningBrush}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+
+            <Border Height="1"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Margin="16,8,16,0"/>
+
+            <!-- ═══ TEST RESULTS ═══ -->
+            <TextBlock Text="TEST RESULTS — #1284"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       FontWeight="SemiBold"
+                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                       CharacterSpacing="50"
+                       Margin="16,12,16,8"/>
+
+            <!-- Progress bar (stacked) -->
+            <Grid Height="4" Margin="16,0" CornerRadius="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="247*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="{StaticResource StatusPassBrush}"
+                        CornerRadius="2,0,0,2"/>
+                <Border Grid.Column="1" Background="{ThemeResource TextFillColorDisabledBrush}"
+                        CornerRadius="0,2,2,0"/>
+            </Grid>
+
+            <!-- Test stats -->
+            <StackPanel Orientation="Horizontal" Spacing="16" Margin="16,8,16,12">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Ellipse Width="6" Height="6" Fill="{StaticResource StatusPassBrush}"/>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                        <Run Text="247" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <Run Text=" passed" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Ellipse Width="6" Height="6" Fill="{ThemeResource TextFillColorDisabledBrush}"/>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                        <Run Text="5" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                        <Run Text=" skipped" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+            <Border Height="1"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Margin="16,0"/>
+
+            <!-- ═══ DEPLOYMENTS ═══ -->
+            <TextBlock Text="DEPLOYMENTS"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       FontWeight="SemiBold"
+                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                       CharacterSpacing="50"
+                       Margin="16,12,16,8"/>
+
+            <!-- Production -->
+            <Grid Padding="16,6" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Width="8" Height="8" Fill="{StaticResource StatusPassBrush}"/>
+                <TextBlock Grid.Column="1" Text="Production" FontSize="13"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock Grid.Column="2" Text="v2.14.1"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           FontFamily="Cascadia Code"
+                           FontSize="11"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+            </Grid>
+
+            <!-- Staging -->
+            <Grid Padding="16,6,16,12" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Width="8" Height="8" Fill="{StaticResource StatusCautionBrush}"/>
+                <TextBlock Grid.Column="1" Text="Staging" FontSize="13"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock Grid.Column="2" Text="v2.15.0-rc.2"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           FontFamily="Cascadia Code"
+                           FontSize="11"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+            </Grid>
+
+            <Border Height="1"
+                    Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                    Margin="16,0"/>
+
+            <!-- ═══ ACTION BUTTONS ═══ -->
+            <StackPanel Orientation="Horizontal"
+                        Spacing="8"
+                        Padding="16,12,16,16">
+                <Button Content="View Logs"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        MinWidth="0" Width="104"/>
+                <Button Content="Open GitHub"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        MinWidth="0" Width="104"/>
+                <Button Content="Deploy"
+                        Style="{StaticResource AccentButtonStyle}"
+                        MinWidth="0" Width="104"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Border>
+</UserControl>

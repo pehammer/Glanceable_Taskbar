@@ -1,0 +1,522 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "https://img.icons8.com/fluency/48/processor.png",
+              "width": "32px",
+              "height": "32px",
+              "style": "RoundedCorners"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "System Monitor",
+              "weight": "Bolder",
+              "size": "Default"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Windows 11 · AMD Ryzen 9 7950X",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "⬆ 4d 7h",
+              "size": "Small",
+              "color": "Light"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "RESOURCE USAGE",
+      "size": "Small",
+      "weight": "Bolder",
+      "color": "Light",
+      "spacing": "Medium"
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Container",
+              "style": "Emphasis",
+              "padding": "Small",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "CPU",
+                  "size": "Small",
+                  "weight": "Bolder",
+                  "color": "Accent",
+                  "horizontalAlignment": "Center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "65%",
+                  "size": "ExtraLarge",
+                  "weight": "Bolder",
+                  "horizontalAlignment": "Center",
+                  "color": "Accent"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "4.8 GHz · 12C",
+                  "size": "Small",
+                  "color": "Light",
+                  "horizontalAlignment": "Center",
+                  "spacing": "None"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Container",
+              "style": "Emphasis",
+              "padding": "Small",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "RAM",
+                  "size": "Small",
+                  "weight": "Bolder",
+                  "color": "Light",
+                  "horizontalAlignment": "Center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "78%",
+                  "size": "ExtraLarge",
+                  "weight": "Bolder",
+                  "horizontalAlignment": "Center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "25 / 32 GB",
+                  "size": "Small",
+                  "color": "Light",
+                  "horizontalAlignment": "Center",
+                  "spacing": "None"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "Container",
+              "style": "Emphasis",
+              "padding": "Small",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "GPU",
+                  "size": "Small",
+                  "weight": "Bolder",
+                  "color": "Good",
+                  "horizontalAlignment": "Center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "30%",
+                  "size": "ExtraLarge",
+                  "weight": "Bolder",
+                  "horizontalAlignment": "Center",
+                  "color": "Good"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "RTX 4080",
+                  "size": "Small",
+                  "color": "Light",
+                  "horizontalAlignment": "Center",
+                  "spacing": "None"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "TOP PROCESSES",
+      "size": "Small",
+      "weight": "Bolder",
+      "color": "Light",
+      "spacing": "Medium",
+      "separator": true
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": " ",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "CPU",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "RAM",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Light",
+              "horizontalAlignment": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "devenv.exe",
+              "size": "Small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Visual Studio 2022",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "24.3%",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "4.1 GB",
+              "size": "Small",
+              "weight": "Bolder",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "msedge.exe",
+              "size": "Small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Microsoft Edge — 34 tabs",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "12.8%",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "3.6 GB",
+              "size": "Small",
+              "weight": "Bolder",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "vmmem",
+              "size": "Small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "WSL2 / Docker",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "9.4%",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "6.2 GB",
+              "size": "Small",
+              "weight": "Bolder",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "node.exe",
+              "size": "Small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "TypeScript Language Server",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "8.1%",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "1.8 GB",
+              "size": "Small",
+              "weight": "Bolder",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "copilot-agent.exe",
+              "size": "Small"
+            },
+            {
+              "type": "TextBlock",
+              "text": "GitHub Copilot",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "50px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "5.2%",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Accent",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "55px",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "920 MB",
+              "size": "Small",
+              "weight": "Bolder",
+              "horizontalAlignment": "Right"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "Task Manager",
+      "url": "ms-settings:taskmanager"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "Resource Monitor",
+      "url": "ms-settings:about"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Details",
+      "style": "positive",
+      "data": {
+        "action": "openDetails"
+      }
+    }
+  ]
+}

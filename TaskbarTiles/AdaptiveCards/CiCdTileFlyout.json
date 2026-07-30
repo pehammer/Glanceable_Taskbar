@@ -1,0 +1,416 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "https://img.icons8.com/fluency/48/checkmark.png",
+              "width": "32px",
+              "height": "32px",
+              "backgroundColor": "#1A6CCB5F",
+              "style": "RoundedCorners"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "CI/CD Pipeline",
+              "weight": "Bolder",
+              "size": "Default"
+            },
+            {
+              "type": "TextBlock",
+              "text": "pehammer / Nova_Planning",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "All Passing",
+              "size": "Small",
+              "weight": "Bolder",
+              "color": "Good"
+            }
+          ],
+          "verticalContentAlignment": "Center"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "style": "Good",
+      "bleed": false,
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "✓ All pipelines healthy — last failure 3 days ago",
+          "size": "Small",
+          "wrap": true
+        }
+      ],
+      "padding": "Small"
+    },
+    {
+      "type": "TextBlock",
+      "text": "RECENT BUILDS",
+      "size": "Small",
+      "weight": "Bolder",
+      "color": "Light",
+      "spacing": "Medium"
+    },
+    {
+      "type": "ColumnSet",
+      "separator": false,
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "✓",
+              "color": "Good",
+              "weight": "Bolder"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "feat: add taskbar tile rendering",
+              "size": "Small",
+              "wrap": false
+            },
+            {
+              "type": "TextBlock",
+              "text": "main · #1284",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "2m",
+              "size": "Small",
+              "color": "Light"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "✓",
+              "color": "Good",
+              "weight": "Bolder"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "fix: flyout positioning on multi-monitor",
+              "size": "Small",
+              "wrap": false
+            },
+            {
+              "type": "TextBlock",
+              "text": "main · #1283",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "18m",
+              "size": "Small",
+              "color": "Light"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "⟳",
+              "color": "Accent",
+              "weight": "Bolder"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "chore: update WinUI dependencies",
+              "size": "Small",
+              "wrap": false
+            },
+            {
+              "type": "TextBlock",
+              "text": "dev/winui-update · #1285",
+              "size": "Small",
+              "color": "Light",
+              "spacing": "None"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "running",
+              "size": "Small",
+              "color": "Accent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "TEST RESULTS — #1284",
+      "size": "Small",
+      "weight": "Bolder",
+      "color": "Light",
+      "spacing": "Medium",
+      "separator": true
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "247",
+          "items": [
+            {
+              "type": "Container",
+              "height": "stretch",
+              "minHeight": "6px",
+              "style": "Good",
+              "bleed": false
+            }
+          ],
+          "spacing": "None"
+        },
+        {
+          "type": "Column",
+          "width": "5",
+          "items": [
+            {
+              "type": "Container",
+              "height": "stretch",
+              "minHeight": "6px",
+              "style": "Default",
+              "bleed": false
+            }
+          ],
+          "spacing": "None"
+        }
+      ],
+      "spacing": "Small"
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "● 247 passed",
+              "size": "Small",
+              "color": "Good"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "● 5 skipped",
+              "size": "Small",
+              "color": "Light"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "DEPLOYMENTS",
+      "size": "Small",
+      "weight": "Bolder",
+      "color": "Light",
+      "spacing": "Medium",
+      "separator": true
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "Small",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "●",
+              "color": "Good",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Production",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "v2.14.1",
+              "size": "Small",
+              "color": "Light",
+              "fontType": "Monospace"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "spacing": "None",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "●",
+              "color": "Warning",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Staging",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "v2.15.0-rc.2",
+              "size": "Small",
+              "color": "Light",
+              "fontType": "Monospace"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "View Logs",
+      "url": "https://github.com/pehammer/Nova_Planning/actions"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "Open GitHub",
+      "url": "https://github.com/pehammer/Nova_Planning"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Deploy",
+      "style": "positive",
+      "data": {
+        "action": "deploy",
+        "environment": "staging",
+        "version": "v2.15.0-rc.2"
+      }
+    }
+  ]
+}

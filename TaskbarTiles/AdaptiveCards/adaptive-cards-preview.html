@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Adaptive Cards Preview — Taskbar Tile Flyouts</title>
+<script src="https://unpkg.com/adaptivecards@3.0.4/dist/adaptivecards.min.js"></script>
+<style>
+  body {
+    font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  .card-wrapper {
+    width: 380px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  /* Dark theme overrides for the Adaptive Card renderer */
+  .card-wrapper .ac-container {
+    background: #2c2c2c !important;
+  }
+
+  .card-wrapper .ac-textBlock {
+    color: #e0e0e0 !important;
+  }
+
+  .card-wrapper .ac-pushButton {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    font-family: 'Segoe UI Variable', sans-serif !important;
+  }
+
+  .card-wrapper .ac-pushButton.style-positive {
+    background: #60cdff !important;
+    color: #000 !important;
+    border: none !important;
+    font-weight: 600 !important;
+  }
+</style>
+</head>
+<body>
+
+<h2>CI/CD Pipeline Flyout</h2>
+<div class="card-wrapper" id="cicd-card"></div>
+
+<h2>System Monitor Flyout</h2>
+<div class="card-wrapper" id="sysmon-card"></div>
+
+<script>
+const cicdPayload = {"$schema":"http://adaptivecards.io/schemas/adaptive-card.json","type":"AdaptiveCard","version":"1.6","body":[{"type":"ColumnSet","columns":[{"type":"Column","width":"auto","items":[{"type":"Image","url":"https://img.icons8.com/fluency/48/checkmark.png","width":"32px","height":"32px","style":"RoundedCorners"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"CI/CD Pipeline","weight":"Bolder","size":"Default"},{"type":"TextBlock","text":"pehammer / Nova_Planning","size":"Small","color":"Light","spacing":"None"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"All Passing","size":"Small","weight":"Bolder","color":"Good"}],"verticalContentAlignment":"Center"}]},{"type":"Container","style":"Good","bleed":false,"items":[{"type":"TextBlock","text":"✓ All pipelines healthy — last failure 3 days ago","size":"Small","wrap":true}],"padding":"Small"},{"type":"TextBlock","text":"RECENT BUILDS","size":"Small","weight":"Bolder","color":"Light","spacing":"Medium"},{"type":"ColumnSet","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"✓","color":"Good","weight":"Bolder"}]},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"feat: add taskbar tile rendering","size":"Small","wrap":false},{"type":"TextBlock","text":"main · #1284","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"2m","size":"Small","color":"Light"}]}]},{"type":"ColumnSet","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"✓","color":"Good","weight":"Bolder"}]},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"fix: flyout positioning on multi-monitor","size":"Small","wrap":false},{"type":"TextBlock","text":"main · #1283","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"18m","size":"Small","color":"Light"}]}]},{"type":"ColumnSet","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"⟳","color":"Accent","weight":"Bolder"}]},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"chore: update WinUI dependencies","size":"Small","wrap":false},{"type":"TextBlock","text":"dev/winui-update · #1285","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"running","size":"Small","color":"Accent"}]}]},{"type":"TextBlock","text":"TEST RESULTS — #1284","size":"Small","weight":"Bolder","color":"Light","spacing":"Medium","separator":true},{"type":"ColumnSet","columns":[{"type":"Column","width":"247","items":[{"type":"Container","height":"stretch","minHeight":"6px","style":"Good","bleed":false}],"spacing":"None"},{"type":"Column","width":"5","items":[{"type":"Container","height":"stretch","minHeight":"6px","style":"Default","bleed":false}],"spacing":"None"}],"spacing":"Small"},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"● 247 passed","size":"Small","color":"Good"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"● 5 skipped","size":"Small","color":"Light"}]}]},{"type":"TextBlock","text":"DEPLOYMENTS","size":"Small","weight":"Bolder","color":"Light","spacing":"Medium","separator":true},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"●","color":"Good","size":"Small"}]},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"Production","size":"Small"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"v2.14.1","size":"Small","color":"Light","fontType":"Monospace"}]}]},{"type":"ColumnSet","spacing":"None","columns":[{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"●","color":"Warning","size":"Small"}]},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"Staging","size":"Small"}]},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"v2.15.0-rc.2","size":"Small","color":"Light","fontType":"Monospace"}]}]}],"actions":[{"type":"Action.OpenUrl","title":"View Logs","url":"https://github.com/pehammer/Nova_Planning/actions"},{"type":"Action.OpenUrl","title":"Open GitHub","url":"https://github.com/pehammer/Nova_Planning"},{"type":"Action.Submit","title":"Deploy","style":"positive","data":{"action":"deploy","environment":"staging","version":"v2.15.0-rc.2"}}]};
+
+const sysmonPayload = {"$schema":"http://adaptivecards.io/schemas/adaptive-card.json","type":"AdaptiveCard","version":"1.6","body":[{"type":"ColumnSet","columns":[{"type":"Column","width":"auto","items":[{"type":"Image","url":"https://img.icons8.com/fluency/48/processor.png","width":"32px","height":"32px","style":"RoundedCorners"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"System Monitor","weight":"Bolder","size":"Default"},{"type":"TextBlock","text":"Windows 11 · AMD Ryzen 9 7950X","size":"Small","color":"Light","spacing":"None"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"auto","items":[{"type":"TextBlock","text":"⬆ 4d 7h","size":"Small","color":"Light"}],"verticalContentAlignment":"Center"}]},{"type":"TextBlock","text":"RESOURCE USAGE","size":"Small","weight":"Bolder","color":"Light","spacing":"Medium"},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"Container","style":"Emphasis","padding":"Small","items":[{"type":"TextBlock","text":"CPU","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Center"},{"type":"TextBlock","text":"65%","size":"ExtraLarge","weight":"Bolder","horizontalAlignment":"Center","color":"Accent"},{"type":"TextBlock","text":"4.8 GHz · 12C","size":"Small","color":"Light","horizontalAlignment":"Center","spacing":"None"}]}]},{"type":"Column","width":"stretch","items":[{"type":"Container","style":"Emphasis","padding":"Small","items":[{"type":"TextBlock","text":"RAM","size":"Small","weight":"Bolder","color":"Light","horizontalAlignment":"Center"},{"type":"TextBlock","text":"78%","size":"ExtraLarge","weight":"Bolder","horizontalAlignment":"Center"},{"type":"TextBlock","text":"25 / 32 GB","size":"Small","color":"Light","horizontalAlignment":"Center","spacing":"None"}]}]},{"type":"Column","width":"stretch","items":[{"type":"Container","style":"Emphasis","padding":"Small","items":[{"type":"TextBlock","text":"GPU","size":"Small","weight":"Bolder","color":"Good","horizontalAlignment":"Center"},{"type":"TextBlock","text":"30%","size":"ExtraLarge","weight":"Bolder","horizontalAlignment":"Center","color":"Good"},{"type":"TextBlock","text":"RTX 4080","size":"Small","color":"Light","horizontalAlignment":"Center","spacing":"None"}]}]}]},{"type":"TextBlock","text":"TOP PROCESSES","size":"Small","weight":"Bolder","color":"Light","spacing":"Medium","separator":true},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":" ","size":"Small"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"CPU","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}]},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"RAM","size":"Small","weight":"Bolder","color":"Light","horizontalAlignment":"Right"}]}]},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"devenv.exe","size":"Small"},{"type":"TextBlock","text":"Visual Studio 2022","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"24.3%","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"4.1 GB","size":"Small","weight":"Bolder","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"}]},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"msedge.exe","size":"Small"},{"type":"TextBlock","text":"Microsoft Edge — 34 tabs","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"12.8%","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"3.6 GB","size":"Small","weight":"Bolder","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"}]},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"vmmem","size":"Small"},{"type":"TextBlock","text":"WSL2 / Docker","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"9.4%","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"6.2 GB","size":"Small","weight":"Bolder","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"}]},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"node.exe","size":"Small"},{"type":"TextBlock","text":"TypeScript Language Server","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"8.1%","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"1.8 GB","size":"Small","weight":"Bolder","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"}]},{"type":"ColumnSet","spacing":"Small","columns":[{"type":"Column","width":"stretch","items":[{"type":"TextBlock","text":"copilot-agent.exe","size":"Small"},{"type":"TextBlock","text":"GitHub Copilot","size":"Small","color":"Light","spacing":"None"}]},{"type":"Column","width":"50px","items":[{"type":"TextBlock","text":"5.2%","size":"Small","weight":"Bolder","color":"Accent","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"},{"type":"Column","width":"55px","items":[{"type":"TextBlock","text":"920 MB","size":"Small","weight":"Bolder","horizontalAlignment":"Right"}],"verticalContentAlignment":"Center"}]}],"actions":[{"type":"Action.OpenUrl","title":"Task Manager","url":"ms-settings:taskmanager"},{"type":"Action.OpenUrl","title":"Resource Monitor","url":"ms-settings:about"},{"type":"Action.Submit","title":"Details","style":"positive","data":{"action":"openDetails"}}]};
+
+function renderCard(payload, containerId) {
+  const adaptiveCard = new AdaptiveCards.AdaptiveCard();
+
+  // Dark host config
+  adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
+    fontFamily: "'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif",
+    containerStyles: {
+      default: {
+        backgroundColor: "#2c2c2c",
+        foregroundColors: {
+          default: { default: "#e0e0e0", subtle: "#a0a0a0" },
+          accent: { default: "#60cdff", subtle: "#60cdff" },
+          good: { default: "#6ccb5f", subtle: "#6ccb5f" },
+          warning: { default: "#fce100", subtle: "#fce100" },
+          attention: { default: "#ff99a4", subtle: "#ff99a4" },
+          light: { default: "#888888", subtle: "#666666" }
+        }
+      },
+      emphasis: {
+        backgroundColor: "#363636",
+        foregroundColors: {
+          default: { default: "#e0e0e0", subtle: "#a0a0a0" },
+          accent: { default: "#60cdff", subtle: "#60cdff" },
+          good: { default: "#6ccb5f", subtle: "#6ccb5f" },
+          warning: { default: "#fce100", subtle: "#fce100" },
+          attention: { default: "#ff99a4", subtle: "#ff99a4" },
+          light: { default: "#888888", subtle: "#666666" }
+        }
+      },
+      good: {
+        backgroundColor: "#1a3d1a",
+        foregroundColors: {
+          default: { default: "#e0e0e0", subtle: "#a0a0a0" },
+          accent: { default: "#60cdff", subtle: "#60cdff" },
+          good: { default: "#6ccb5f", subtle: "#6ccb5f" },
+          warning: { default: "#fce100", subtle: "#fce100" },
+          attention: { default: "#ff99a4", subtle: "#ff99a4" },
+          light: { default: "#888888", subtle: "#666666" }
+        }
+      }
+    },
+    spacing: { small: 4, default: 8, medium: 12, large: 16, extraLarge: 24, padding: 12 },
+    separator: { lineThickness: 1, lineColor: "#333333" },
+    actions: {
+      actionsOrientation: "horizontal",
+      actionAlignment: "stretch",
+      buttonSpacing: 8,
+      maxActions: 5
+    }
+  });
+
+  adaptiveCard.parse(payload);
+  const renderedCard = adaptiveCard.render();
+  renderedCard.style.borderRadius = '8px';
+  document.getElementById(containerId).appendChild(renderedCard);
+}
+
+renderCard(cicdPayload, 'cicd-card');
+renderCard(sysmonPayload, 'sysmon-card');
+</script>
+</body>
+</html>
